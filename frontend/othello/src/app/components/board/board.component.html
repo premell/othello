@@ -1,0 +1,29 @@
+
+<div class="board">
+  <ng-container *ngFor="let squareNumber of squareNumbers" class="squareNumber">
+    <div *ngIf="squareContainsMark(squareNumber)" [ngClass]="isWhite(squareNumber) ? 'mark white' : 'mark black'">
+      <!-- <div class="mark" [style.color]="marks[squareNumber].Color"> -->
+      1
+      <!-- </div> -->
+    </div>
+  </ng-container>
+</div>
+
+
+<!-- <p>hello there</p> -->
+<!-- <div class="board"> -->
+<!--   <div *ngFor="let squareNumber of squareNumbers" class="squareNumber"> -->
+<!--     <ng-container -->
+<!--       [ngTemplateOutlet]='marks.findIndex(mark => mark.SquareNumber == squareNumber) > -1 ? mark_template : nothing_template' -->
+<!--     ></ng-container> -->
+<!--   </div> -->
+<!-- </div> -->
+<!---->
+<!-- <ng-template #mark_template> -->
+<!--   <div class="mark">THE SQUARE EXISTS</div> -->
+<!-- </ng-template> -->
+<!---->
+<!-- <ng-template #nothing_template> -->
+<!--   <div>no mark</div> -->
+<!-- </ng-template> -->
+<!-- <!-- [ngTemplateOutletContext]="{color:marks.find(mark => mark.SquareNumber === squareNumber).Color}" -->
