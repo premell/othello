@@ -1,0 +1,58 @@
+// <div class="board">
+//   <ng-container *ngFor="let squareNumber of squareNumbers" class="squareNumber">
+//     <div *ngIf="squareContainsMark(squareNumber)" [ngClass]="isWhite(squareNumber) ? 'mark white' : 'mark black'">
+//       <!-- <div class="mark" [style.color]="marks[squareNumber].Color"> -->
+//       1
+//       <!-- </div> -->
+//     </div>
+//   </ng-container>
+// </div>
+
+.board {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: repeat(8, 1fr);
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  max-width: 800px;
+  min-width: 400px;
+  background-color: black;
+}
+
+.square {
+  background-color: #11823b;
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.square:hover{
+  background-color: #004d25;
+}
+
+.mark {
+  border-radius: 50%;
+  width: 80%;
+  height: 80%;
+}
+
+.white {
+  background-color: white;
+}
+
+.black {
+  background-color: black;
+}
+
+.board_players_turn {
+  cursor: pointer;
+}
+
+.mark_moving_with_cursor {
+  width: 0px;
+  height: 0px;
+  pointer-events:none;
+  position: absolute;
+  background-color: red;
+}
