@@ -1,8 +1,19 @@
+<!-- <div class="board board_players_turn"> -->
+<!--   <div class="mark_moving_with_cursor mark"></div> -->
+<!--   <div *ngFor="let squareNumber of squareNumbers" class="square"> -->
+<!--     <div *ngIf="squareContainsMark(squareNumber)" [ngClass]="isWhite(squareNumber) ? 'mark white' : 'mark black'"> -->
+<!--     </div> -->
+<!--   </div> -->
+<!-- </div> -->
+
 <div class="board board_players_turn">
   <div class="mark_moving_with_cursor mark"></div>
-  <div *ngFor="let squareNumber of squareNumbers" class="square">
-    <div *ngIf="squareContainsMark(squareNumber)" [ngClass]="isWhite(squareNumber) ? 'mark white' : 'mark black'">
+  <!-- <ng-template *ngIf="gameStates.length > 0"> -->
+    <div *ngFor="let square of gameStateToRender.SquareColors" class="square">
+      <div
+        *ngIf="square === Color.White || square === Color.Black"
+        [ngClass]="square === Color.White ? 'mark white' : 'mark black'"
+      ></div>
     </div>
-  </div>
+  <!-- </ng-template> -->
 </div>
-

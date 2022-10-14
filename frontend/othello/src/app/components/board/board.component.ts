@@ -1,15 +1,9 @@
 import { Component, OnInit } from '@angular/core'
+import { Move, Mark, Color, GameState } from '../../helper/models'
+import { createDefaultState, placeMark} from '../../helper/functions'
 
-enum Color {
-  Black,
-  White,
-}
-interface Mark {
-  SquareNumber: number
-  Color: Color
-}
-let markAttachedToCursor: HTMLElement;
-let referenceMarkOnBoard: HTMLElement;
+let markAttachedToCursor: HTMLElement
+let referenceMarkOnBoard: HTMLElement
 
 @Component({
   selector: 'app-board',
@@ -17,29 +11,42 @@ let referenceMarkOnBoard: HTMLElement;
   styleUrls: ['./board.component.scss'],
 })
 export class BoardComponent implements OnInit {
-  squareNumbers: number[] = [...Array(64).keys()]
-  marks: Mark[] = [
-    {
-      SquareNumber: 10,
-      Color: Color.Black,
-    },
-    {
-      SquareNumber: 15,
-      Color: Color.White,
-    },
-    {
-      SquareNumber: 11,
-      Color: Color.Black,
-    },
-    {
-      SquareNumber: 16,
-      Color: Color.White,
-    },
-  ]
+  // you have to do this so you can use it in the template
+  readonly Color = Color
+
+  gameStates!: GameState[]
+  gameStateToRender: GameState = createDefaultState()
+
+  // squareNumbers: number[] = [...Array(64).keys()]
+  // marks: Mark[] = [
+  //   {
+  //     SquareNumber: 10,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 15,
+  //     Color: Color.White,
+  //   },
+  //   {
+  //     SquareNumber: 11,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 16,
+  //     Color: Color.White,
+  //   },
+  // ]
 
   constructor() {}
 
   ngOnInit(): void {
+    let testMove: Move = {
+      Color: Color.Black,
+      MoveNumber: 1,
+      TargetSquare: 37,
+      RemainingTime: 500,
+    }
+    placeMark(this.gameStateToRender, testMove)
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)
     )
@@ -51,21 +58,22 @@ export class BoardComponent implements OnInit {
     board.addEventListener('mouseleave', () => this.cursorLeaveBoard())
   }
 
-  squareContainsMark(squareNumber: number): boolean {
-    return !!this.marks.find((mark) => mark.SquareNumber == squareNumber)
-  }
+  // squareContainsMark(squareNumber: number): boolean {
+  //   return !!this.marks.find((mark) => mark.SquareNumber == squareNumber)
+  // }
 
-  isWhite(squareNumber: number): boolean {
-    return (
-      this.marks?.find((mark) => mark?.SquareNumber == squareNumber)?.Color ===
-      Color.White
-    )
-  }
+  // isWhite(squareNumber: number): boolean {
+  //   return (
+  //     this.marks?.find((mark) => mark?.SquareNumber == squareNumber)?.Color ===
+  //     Color.White
+  //   )
+  // }
 
   isPlayerTurn(): boolean {
     return true
   }
 
+  // a reference mark to get the element width
   getReferenceMark(): HTMLElement {
     if (referenceMarkOnBoard === undefined || referenceMarkOnBoard === null)
       referenceMarkOnBoard = document.getElementsByClassName(
@@ -107,12 +115,50 @@ export class BoardComponent implements OnInit {
 
   cursorEnterBoard(): void {
     const mark = this.getMarkAttachedToCursor()
-    if(this.isPlayerTurn()) mark.style.visibility = 'visible'
+    if (this.isPlayerTurn()) mark.style.visibility = 'visible'
+  // squareNumbers: number[] = [...Array(64).keys()]
+  // marks: Mark[] = [
+  //   {
+  //     SquareNumber: 10,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 15,
+  //     Color: Color.White,
+  //   },
+  //   {
+  //     SquareNumber: 11,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 16,
+  //     Color: Color.White,
+  //   },
+  // ]
   }
 
   cursorLeaveBoard(): void {
     const mark = this.getMarkAttachedToCursor()
 
     mark.style.visibility = 'hidden'
+  // squareNumbers: number[] = [...Array(64).keys()]
+  // marks: Mark[] = [
+  //   {
+  //     SquareNumber: 10,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 15,
+  //     Color: Color.White,
+  //   },
+  //   {
+  //     SquareNumber: 11,
+  //     Color: Color.Black,
+  //   },
+  //   {
+  //     SquareNumber: 16,
+  //     Color: Color.White,
+  //   },
+  // ]
   }
 }
