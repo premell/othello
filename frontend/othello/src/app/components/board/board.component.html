@@ -8,8 +8,7 @@
 
 <div class="board board_players_turn">
   <div class="mark_moving_with_cursor mark"></div>
-  <!-- <ng-template *ngIf="gameStates.length > 0"> -->
-    <div *ngFor="let square of gameStateToRender.SquareColors" class="square">
+  <div *ngFor="let square of gameStateToRender.SquareColors; let i = index" class="square" (click)="handleSquareClicked(i)">
       <div
         *ngIf="square === Color.White || square === Color.Black"
         [ngClass]="square === Color.White ? 'mark white' : 'mark black'"

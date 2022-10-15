@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
-import { Move, Mark, Color, GameState } from '../../helper/models'
-import { createDefaultState, placeMark} from '../../helper/functions'
+import { Move, Mark, Color, GameState, InvalidMove} from '../../helper/models'
+import { createDefaultState, placeMark, getOpponentColor} from '../../helper/functions'
+import { trigger, transition, state, animate, style } from '@angular/animations';
 
 let markAttachedToCursor: HTMLElement
 let referenceMarkOnBoard: HTMLElement
@@ -16,58 +17,21 @@ export class BoardComponent implements OnInit {
 
   gameStates!: GameState[]
   gameStateToRender: GameState = createDefaultState()
-
-  // squareNumbers: number[] = [...Array(64).keys()]
-  // marks: Mark[] = [
-  //   {
-  //     SquareNumber: 10,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 15,
-  //     Color: Color.White,
-  //   },
-  //   {
-  //     SquareNumber: 11,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 16,
-  //     Color: Color.White,
-  //   },
-  // ]
+  playerColor: Color = Color.Black
 
   constructor() {}
 
   ngOnInit(): void {
-    let testMove: Move = {
-      Color: Color.Black,
-      MoveNumber: 1,
-      TargetSquare: 37,
-      RemainingTime: 500,
-    }
-    placeMark(this.gameStateToRender, testMove)
+
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)
     )
     window.addEventListener('resize', () => this.resizeCursorMark())
 
     const board = document.getElementsByClassName('board')[0]
-    console.log(board)
     board.addEventListener('mouseenter', () => this.cursorEnterBoard())
     board.addEventListener('mouseleave', () => this.cursorLeaveBoard())
   }
-
-  // squareContainsMark(squareNumber: number): boolean {
-  //   return !!this.marks.find((mark) => mark.SquareNumber == squareNumber)
-  // }
-
-  // isWhite(squareNumber: number): boolean {
-  //   return (
-  //     this.marks?.find((mark) => mark?.SquareNumber == squareNumber)?.Color ===
-  //     Color.White
-  //   )
-  // }
 
   isPlayerTurn(): boolean {
     return true
@@ -116,49 +80,39 @@ export class BoardComponent implements OnInit {
   cursorEnterBoard(): void {
     const mark = this.getMarkAttachedToCursor()
     if (this.isPlayerTurn()) mark.style.visibility = 'visible'
-  // squareNumbers: number[] = [...Array(64).keys()]
-  // marks: Mark[] = [
-  //   {
-  //     SquareNumber: 10,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 15,
-  //     Color: Color.White,
-  //   },
-  //   {
-  //     SquareNumber: 11,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 16,
-  //     Color: Color.White,
-  //   },
-  // ]
   }
 
   cursorLeaveBoard(): void {
     const mark = this.getMarkAttachedToCursor()
 
     mark.style.visibility = 'hidden'
-  // squareNumbers: number[] = [...Array(64).keys()]
-  // marks: Mark[] = [
-  //   {
-  //     SquareNumber: 10,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 15,
-  //     Color: Color.White,
-  //   },
-  //   {
-  //     SquareNumber: 11,
-  //     Color: Color.Black,
-  //   },
-  //   {
-  //     SquareNumber: 16,
-  //     Color: Color.White,
-  //   },
-  // ]
+  }
+
+  handleSquareClicked = (squareNumber: number) => {
+    console.log(squareNumber)
+
+    // TODO
+    if(!this.isPlayerTurn()) return
+
+    const move: Move = {
+      Color: this.playerColor,
+      MoveNumber: 2,
+      TargetSquare: squareNumber,
+      RemainingTime: 500,
+    }
+
+    const result = placeMark(this.gameStateToRender, move)
+
+    if ('Message' in result) console.log("NOOOOOO ERROR ERR AH")
+    else {
+      this.gameStateToRender = result as GameState
+      this.playerColor = getOpponentColor(this.playerColor)
+
+      markAttachedToCursor = document.getElementsByClassName(
+        'mark_moving_with_cursor'
+      )[0] as HTMLElement
+        markAttachedToCursor.style.backgroundColor = this.playerColor === Color.White ? "white" : "black"
+    }
+
   }
 }

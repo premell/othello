@@ -1,0 +1,40 @@
+version: "3"
+
+services:
+  webserver: 
+    image: othello_website
+    ports: 
+      - "2002:80"
+    #environment:
+    depends_on:
+      - api
+    networks:
+      othello_network:
+        ipv4_address: 192.168.92.21
+  api:
+    image: 
+    depends_on:
+      - db
+  db:
+    image: mysql:8
+    environment:
+      MYSQL_DATABASE: 'db'
+      MYSQL_USER: 'root'
+      MYSQL_PASSWORD: 'hej.'
+      MYSQL_ROOT_PASSWORD: 'hej.'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3306'
+    volumes:
+      - test-db:/var/lib/mysql
+# Names our volume
+volumes:
+  test-db:
+networks:
+  othello_network:
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.92.0/24"
+
