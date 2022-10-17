@@ -19,7 +19,7 @@ type CreateGameData struct {
 }
 
 type GetGameData struct {
-	GameID string
+	GameID int
 }
 
 func main() {
