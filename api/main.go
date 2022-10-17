@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	    //"encoding/json"
+
+	//"encoding/json"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
@@ -13,13 +14,38 @@ import (
 
 var DB *sql.DB
 
-type CreateGameData struct {
+type CreateGameRequestBody struct {
 	TimeLimit     int
 	TimeIncrement int
 }
 
-type GetGameData struct {
+type GetGameRequestBody struct {
 	GameID int
+}
+
+type GameState struct {
+	GameState            string
+	PlayerColor          int
+	PlayerRemainingTime  int
+	PreviousMoveNumber   int
+	PreviousTargetSquare int
+}
+
+type Game struct {
+	TimeLimit          int    `json:"time_limit,omitempty"`
+	TimeIncrement      int    `json:"time_increment,omitempty"`
+	GameStatus         string `json:"game_status,omitempty"`
+	WhiteTimeRemaining int    `json:"white_time_remaining,omitempty"`
+	BlackTimeRemaining int    `json:"black_time_remaining,omitempty"`
+	GameStates         []GameState
+}
+
+type MovesData struct {
+	TimeLimit          int `json:"time_limit,omitempty"`
+	TimeIncrement      int `json:"time_increment,omitempty"`
+	GameStatus         int `json:"game_status,omitempty"`
+	WhiteTimeRemaining int `json:"white_time_remaining,omitempty"`
+	BlackTimeRemaining int `json:"black_time_remaining,omitempty"`
 }
 
 func main() {
@@ -42,7 +68,7 @@ func main() {
 	// router.POST("/game", makeMove)
 	// router.POST("/game", revertMove)
 	// router.POST("/game", surrender)
-	// // router.POST("/game", pass)
+	// router.POST("/game", pass)
 	router.GET("/game/getGame", getGame)
 	// router.GET("/game", getTime)
 
@@ -50,12 +76,12 @@ func main() {
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	router.Run(":1202")
+	router.Run(":1011")
 
 }
 
 func createGame(c *gin.Context) {
-	var requestBody CreateGameData
+	var requestBody CreateGameRequestBody
 
 	if err := c.BindJSON(&requestBody); err != nil {
 		fmt.Print("this?")
@@ -84,22 +110,49 @@ func createGame(c *gin.Context) {
 }
 
 func getGame(c *gin.Context) {
+	query := `
+    SELECT g.time_limit, g.time_increment, g.white_time_remaining, g.black_time_remaining, status.status_text, 
+	moves.resulting_state, moves.target_square,
+	moves.move_number,
+	moves.player_color,
+	moves.player_remaining_time
+    FROM games AS g
+    JOIN moves ON g.id = moves.game_id
+    JOIN game_statuses AS status ON g.game_status = status.status_id
+    WHERE g.id= ?
+  `
 
-	var requestBody GetGameData
+	var requestBody GetGameRequestBody
 
 	if err := c.BindJSON(&requestBody); err != nil {
-		fmt.Print("this?")
 		panic(err)
 	}
 
-	res, err := DB.Query("SELECT * FROM moves WHERE game_ID=?", requestBody.GameID)
-
-	fmt.Println(res)
-
+	rows, err := DB.Query(query, requestBody.GameID)
 	if err != nil {
 		panic(err)
 	}
 
-  c.JSON(200, res)
-}
+	game := &Game{}
+	for rows.Next() {
+		state := &GameState{}
+		err = rows.Scan(
 
+			&game.TimeLimit, &game.TimeIncrement, &game.WhiteTimeRemaining, &game.BlackTimeRemaining, &game.GameStatus,
+			&state.GameState,
+			&state.PreviousTargetSquare,
+			&state.PreviousMoveNumber,
+			&state.PlayerColor,
+			&state.PlayerRemainingTime,
+		)
+		if err != nil {
+			panic(err)
+		}
+		game.GameStates = append(game.GameStates, *state)
+	}
+
+	fmt.Println("hejsan")
+	fmt.Printf("%v", game)
+
+	c.JSON(200, game)
+}
