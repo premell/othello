@@ -1,4 +1,4 @@
-import { GameState, Move, InvalidMove, Color } from '../helper/models'
+import { Game, AttemptMove, Move, InvalidMove, Color } from '../helper/models'
 
 // const generateStateFromMoves = (moves: Move[]): GameState[] => {
 //   let States: GameState[] = []
@@ -13,47 +13,51 @@ import { GameState, Move, InvalidMove, Color } from '../helper/models'
 
 const changeMarksInLine = (
   lineToCheck: number[],
-  gameState: GameState,
+  currentState: number[],
   playerColor: Color,
   opponentColor: Color
-): GameState => {
+): number[] => {
 
+  let newState = [...currentState]
   let tmp_arr: number[] = []
   for (const square of lineToCheck) {
-    if (gameState.SquareColors[square] === opponentColor) tmp_arr.push(+square)
+    if (newState [square] === opponentColor) tmp_arr.push(+square)
 
-    else if (gameState.SquareColors[square] === Color.None) break
-    else if (gameState.SquareColors[square] === playerColor) {
+    else if (newState[square] === Color.None) break
+    else if (newState[square] === playerColor) {
       tmp_arr.forEach((element) => {
-        gameState.SquareColors[element] = playerColor
+        newState[element] = playerColor
       })
       break
     }
   }
 
-  return gameState
+  return newState
 }
 
 const changeMarks = (
   arraysToCheck: number[][],
-  gameState: GameState,
+  currentState: number[],
   playerColor: Color,
   opponentColor: Color
-): GameState => {
-  arraysToCheck.forEach((line) => {
+): number[] => {
+
+  const newState = arraysToCheck.reduce((state, lineToCheck) => changeMarksInLine(lineToCheck, state, playerColor, opponentColor), currentState)
+
+/*   arraysToCheck.forEach((line) => {
     //console.log("loop")
     gameState = changeMarksInLine(line, gameState, playerColor, opponentColor)
-  })
+  }) */
 
-  return gameState
+  return newState
 }
 
 export const placeMark = (
-  currentGameState: GameState,
-  move: Move
-): GameState | InvalidMove => {
-  let newGameState: GameState = JSON.parse(JSON.stringify(currentGameState));
-  const playerColor: Color = move.Color
+  currentGameState: Game,
+  move: AttemptMove
+): Move | InvalidMove => {
+  let currentState: number[] = JSON.parse(JSON.stringify(currentGameState.Moves[currentGameState.Moves.length - 1].ResultingState));
+  const playerColor: Color = move.PlayerColor
   const opponentColor: Color = getOpponentColor(playerColor)
   const square = move.TargetSquare
 
@@ -106,30 +110,33 @@ export const placeMark = (
     arraysToCheck[7].push(i)
   }
 
-  newGameState = changeMarks(
+  const newState = changeMarks(
     arraysToCheck,
-    newGameState,
+    currentState,
     playerColor,
     opponentColor
   )
 
-  if (newGameState.SquareColors + "" == currentGameState.SquareColors + "")
+  if (newState + "" == currentState + "")
     return {
       Message: 'must change atleast one mark',
     }
 
-  newGameState.SquareColors[square] = playerColor
+  newState[square] = playerColor
+  const newMove: Move= {
+    ...move,
+    ResultingState: newState
+  }
 
-  return newGameState
+  return newMove
 }
 
-let beginningBoard: GameState = {
-  SquareColors: [],
+/* let beginningBoard: Game = {
   MoveNumber: 1,
-}
+} */
 
 // creates an object with the default state from beginning of a game
-export const createDefaultState = (): GameState => {
+/* export const createDefaultState = (): GameState => {
   if (beginningBoard.SquareColors.length === 0) {
     // populate the board with none values
     for (let i = 0; i < 64; i++) {
@@ -144,7 +151,7 @@ export const createDefaultState = (): GameState => {
   }
 
   return { ...beginningBoard }
-}
+} */
 
 export const getOpponentColor = (playerColor: Color): Color =>
   playerColor === Color.White ? Color.Black : Color.White

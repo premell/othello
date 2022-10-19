@@ -4,12 +4,13 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"time"
 
 	//"encoding/json"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
-	// "net/http"
 )
 
 var DB *sql.DB
@@ -23,33 +24,54 @@ type GetGameRequestBody struct {
 	GameID int
 }
 
-type GameState struct {
+/* type GameState struct {
 	GameState            string
 	PlayerColor          int
 	PlayerRemainingTime  int
 	PreviousMoveNumber   int
 	PreviousTargetSquare int
+} */
+/* 	TimeLimit          int
+TimeIncrement      int `json:"time_increment,omitempty"`
+GameStatus         int `json:"game_status,omitempty"`
+WhiteTimeRemaining int `json:"white_time_remaining,omitempty"`
+BlackTimeRemaining int `json:"black_time_remaining,omitempty"` */
+
+type NullableMove struct {
+	PlayerColor         sql.NullInt64  `json:"player_color,omitempty"`
+	MoveNumber          sql.NullInt64  `json:"move_number,omitempty"`
+	TargetSquare        sql.NullInt64  `json:"target_square,omitempty"`
+	PlayerRemainingTime sql.NullInt64  `json:"player_remaining_time,omitempty"`
+	ResultingState      sql.NullString `json:"resulting_state,omitempty"`
+}
+
+type Move struct {
+	PlayerColor         int    `json:"player_color,omitempty"`
+	MoveNumber          int    `json:"move_number,omitempty"`
+	TargetSquare        int    `json:"target_square,omitempty"`
+	PlayerRemainingTime int    `json:"player_remaining_time,omitempty"`
+	ResultingState      string `json:"resulting_state,omitempty"`
 }
 
 type Game struct {
-	TimeLimit          int    `json:"time_limit,omitempty"`
-	TimeIncrement      int    `json:"time_increment,omitempty"`
-	GameStatus         string `json:"game_status,omitempty"`
-	WhiteTimeRemaining int    `json:"white_time_remaining,omitempty"`
-	BlackTimeRemaining int    `json:"black_time_remaining,omitempty"`
-	GameStates         []GameState
+	ID                 int64 `json:"id,primaryKey:type:uuid"`
+	TimeLimit          int   `json:"time_limit,omitempty"`
+	TimeIncrement      int   `json:"time_increment,omitempty"`
+	GameStatus         int   `json:"game_status,omitempty"`
+	WhiteTimeRemaining int   `json:"white_time_remaining,omitempty"`
+	BlackTimeRemaining int   `json:"black_time_remaining,omitempty"`
+	Moves              []Move
 }
 
-type MovesData struct {
+/* type Move struct {
 	TimeLimit          int `json:"time_limit,omitempty"`
 	TimeIncrement      int `json:"time_increment,omitempty"`
 	GameStatus         int `json:"game_status,omitempty"`
 	WhiteTimeRemaining int `json:"white_time_remaining,omitempty"`
 	BlackTimeRemaining int `json:"black_time_remaining,omitempty"`
-}
+} */
 
 func main() {
-
 	db, err := sql.Open("mysql",
 		"root:hej.@tcp(127.0.0.1:3306)/othello")
 	if err != nil {
@@ -72,19 +94,25 @@ func main() {
 	router.GET("/game/getGame", getGame)
 	// router.GET("/game", getTime)
 
-	router.NoRoute(func(c *gin.Context) {
-		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
-	})
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
 
-	router.Run(":1011")
-
+	router.Run(":1016")
 }
 
 func createGame(c *gin.Context) {
 	var requestBody CreateGameRequestBody
 
 	if err := c.BindJSON(&requestBody); err != nil {
-		fmt.Print("this?")
 		panic(err)
 	}
 
@@ -103,56 +131,70 @@ func createGame(c *gin.Context) {
 		requestBody.TimeLimit,
 	)
 
+	id, err := res.LastInsertId()
+
 	rowsAffec, _ := res.RowsAffected()
 	if err != nil || rowsAffec != 1 {
 		panic(err)
 	}
+
+	game := Game{
+		ID:                 id,
+		TimeLimit:          requestBody.TimeLimit,
+		TimeIncrement:      requestBody.TimeIncrement,
+		GameStatus:         5,
+		WhiteTimeRemaining: requestBody.TimeLimit,
+		BlackTimeRemaining: requestBody.TimeLimit,
+		Moves:              []Move{},
+	}
+	c.JSON(200, game)
 }
 
 func getGame(c *gin.Context) {
 	query := `
-    SELECT g.time_limit, g.time_increment, g.white_time_remaining, g.black_time_remaining, status.status_text, 
-	moves.resulting_state, moves.target_square,
-	moves.move_number,
+    SELECT g.id, g.time_limit, g.time_increment, g.game_status, g.white_time_remaining, g.black_time_remaining, 
+	moves.resulting_state, moves.target_square, moves.move_number,
 	moves.player_color,
 	moves.player_remaining_time
     FROM games AS g
-    JOIN moves ON g.id = moves.game_id
-    JOIN game_statuses AS status ON g.game_status = status.status_id
+    LEFT JOIN moves ON g.id = moves.game_id
     WHERE g.id= ?
   `
 
-	var requestBody GetGameRequestBody
+	gameID := c.Query("GameID")
 
-	if err := c.BindJSON(&requestBody); err != nil {
-		panic(err)
-	}
-
-	rows, err := DB.Query(query, requestBody.GameID)
+	rows, err := DB.Query(query, gameID)
 	if err != nil {
+		fmt.Println("ERROR 2")
 		panic(err)
 	}
 
 	game := &Game{}
 	for rows.Next() {
-		state := &GameState{}
+		nullableMove := &NullableMove{}
 		err = rows.Scan(
-
-			&game.TimeLimit, &game.TimeIncrement, &game.WhiteTimeRemaining, &game.BlackTimeRemaining, &game.GameStatus,
-			&state.GameState,
-			&state.PreviousTargetSquare,
-			&state.PreviousMoveNumber,
-			&state.PlayerColor,
-			&state.PlayerRemainingTime,
+			&game.ID,
+			&game.TimeLimit, &game.TimeIncrement, &game.GameStatus, &game.WhiteTimeRemaining, &game.BlackTimeRemaining,
+			&nullableMove.ResultingState,
+			&nullableMove.TargetSquare,
+			&nullableMove.MoveNumber,
+			&nullableMove.PlayerColor,
+			&nullableMove.PlayerRemainingTime,
 		)
 		if err != nil {
+			fmt.Println(err)
 			panic(err)
 		}
-		game.GameStates = append(game.GameStates, *state)
+		if nullableMove.ResultingState.Valid && nullableMove.TargetSquare.Valid && nullableMove.MoveNumber.Valid && nullableMove.PlayerColor.Valid && nullableMove.PlayerRemainingTime.Valid {
+			game.Moves = append(game.Moves, Move{
+				PlayerColor:         int(nullableMove.PlayerColor.Int64),
+				MoveNumber:          int(nullableMove.MoveNumber.Int64),
+				TargetSquare:        int(nullableMove.TargetSquare.Int64),
+				PlayerRemainingTime: int(nullableMove.PlayerRemainingTime.Int64),
+				ResultingState:      string(nullableMove.ResultingState.String),
+			})
+		}
 	}
-
-	fmt.Println("hejsan")
-	fmt.Printf("%v", game)
 
 	c.JSON(200, game)
 }

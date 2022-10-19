@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core'
-import { Move, Mark, Color, GameState, InvalidMove} from '../../helper/models'
-import { createDefaultState, placeMark, getOpponentColor} from '../../helper/functions'
+import { Move, Mark, Color, Game, InvalidMove, AttemptMove} from '../../helper/models'
+import { placeMark, getOpponentColor} from '../../helper/functions'
 import { trigger, transition, state, animate, style } from '@angular/animations';
+
+import {OthelloService} from "../../services/othello.service"
 
 let markAttachedToCursor: HTMLElement
 let referenceMarkOnBoard: HTMLElement
@@ -14,14 +16,17 @@ let referenceMarkOnBoard: HTMLElement
 export class BoardComponent implements OnInit {
   // you have to do this so you can use it in the template
   readonly Color = Color
-
-  gameStates!: GameState[]
-  gameStateToRender: GameState = createDefaultState()
+  game!: Game
+  gameStateToRender!: number[]
   playerColor: Color = Color.Black
 
   constructor() {}
 
   ngOnInit(): void {
+
+
+    
+
 
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)
@@ -94,18 +99,20 @@ export class BoardComponent implements OnInit {
     // TODO
     if(!this.isPlayerTurn()) return
 
-    const move: Move = {
-      Color: this.playerColor,
+    const move: AttemptMove  = {
+      PlayerColor: this.playerColor,
       MoveNumber: 2,
       TargetSquare: squareNumber,
       RemainingTime: 500,
     }
 
-    const result = placeMark(this.gameStateToRender, move)
+    const result = placeMark(this.game, move)
 
+    //...BoardComponent.
     if ('Message' in result) console.log("NOOOOOO ERROR ERR AH")
     else {
-      this.gameStateToRender = result as GameState
+      this.game.Moves.push(result)
+      this.gameStateToRender = result.ResultingState
       this.playerColor = getOpponentColor(this.playerColor)
 
       markAttachedToCursor = document.getElementsByClassName(

@@ -4,8 +4,11 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: "localhost:1010"
+  apiBaseUrl: "http://localhost:1016"
 };
+
+//NODE_TLS_REJECT_UNAUTHORIZED=0 
+//process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
 
 /*
  * For easier debugging in development mode, you can import the following file

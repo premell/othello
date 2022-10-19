@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { createDefaultState} from "../../helper/functions"
+import { Game } from 'src/app/helper/models';
+import * as internal from 'stream';
+//import { createDefaultState} from "../../helper/functions"
+
+
+import { OthelloService } from '../../services/othello.service';
 
 @Component({
   selector: 'app-home',
@@ -8,15 +13,14 @@ import { createDefaultState} from "../../helper/functions"
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  id: number = 0;
+  //game!: Game;
+
+  constructor(private othelloService: OthelloService) { }
 
   ngOnInit(): void {
-
-    console.log("test")
-    createDefaultState()
-    //testState = 
+    //this.othelloService.getGame(1).subscribe(id => console.log("here ", id))
+    //this.othelloService.createGame(900, 63).subscribe(game => this.game = game)
+    //createDefaultState()
   }
-
-
-
 }
