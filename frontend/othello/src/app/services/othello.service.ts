@@ -10,6 +10,20 @@ import { environment } from './../../environments/environment';
 import { Move, Mark, Color, Game, InvalidMove} from '../helper/models'
 import { Observable } from 'rxjs';
 
+
+const startingState = "-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,1,-1,-1,-1,-1,-1,-1,1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,"
+
+// Dummy data
+let dummyGame: Game= {
+  Id: "1",
+  TimeLimit: 500,
+  TimeIncrement: 5,
+  GameStatus: "currently_playing",
+  WhiteTimeRemaining: 500,
+  BlackTimeRemaining: 500,
+  Moves: []
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -17,8 +31,11 @@ export class OthelloService {
 
   constructor(private http: HttpClient) { }
 
-  getGame(id: number): Observable<Game[]>{
-    return this.http.get<Game[]>(environment.apiBaseUrl + "/game/getGame?GameID="+ id)
+  getStartingState = (): string => startingState
+
+  getGame(id: number): Game{
+    return dummyGame
+    //return this.http.get<Game>(environment.apiBaseUrl + "/game/getGame?GameID="+ id)
   }
 
   createGame(timeLimit: number, timeIncrement: number): Observable<Game>{

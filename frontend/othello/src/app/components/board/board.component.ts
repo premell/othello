@@ -20,13 +20,11 @@ export class BoardComponent implements OnInit {
   gameStateToRender!: number[]
   playerColor: Color = Color.Black
 
-  constructor() {}
+  constructor(private othelloService: OthelloService) {}
 
   ngOnInit(): void {
-
-
-    
-
+    this.game = this.othelloService.getGame(1)
+    if(this.game.Moves.length === 0) this.gameStateToRender = this.othelloService.getStartingState().split(",").map(string => parseInt(string))
 
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)
