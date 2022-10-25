@@ -52,15 +52,22 @@ const changeMarks = (
   return newState
 }
 
-export const getCurrentState = () => {
+export const getStartingState = (): number[] => [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,1,-1,-1,-1,-1,-1,-1,1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 
+export const getStateFromString = (stateAsString: string): number[] => stateAsString.split(",").map(string => parseInt(string))
+
+export const getCurrentState = (currentGame: Game): number[]=> {
+  if(currentGame.Moves.length === 0) return getStartingState()
+  else return currentGame.Moves[currentGame.Moves.length - 1].ResultingState
 }
 
 export const placeMark = (
-  currentGameState: Game,
+  currentGame: Game,
   move: AttemptMove
 ): Move | InvalidMove => {
-  let currentState: number[] = getCurrentState(currentGameState) JSON.parse(JSON.stringify(currentGameState.Moves[currentGameState.Moves.length - 1].ResultingState));
+  
+
+  let currentState: number[] = getCurrentState(JSON.parse(JSON.stringify(currentGame))) //JSON.parse(JSON.stringify(currentGameState.Moves[currentGameState.Moves.length - 3].ResultingState));
   const playerColor: Color = move.PlayerColor
   const opponentColor: Color = getOpponentColor(playerColor)
   const square = move.TargetSquare

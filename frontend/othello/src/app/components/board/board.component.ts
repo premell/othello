@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core'
 import { Move, Mark, Color, Game, InvalidMove, AttemptMove} from '../../helper/models'
-import { placeMark, getOpponentColor} from '../../helper/functions'
+import { placeMark, getStartingState, getOpponentColor} from '../../helper/functions'
+
 import { trigger, transition, state, animate, style } from '@angular/animations';
 
 import {OthelloService} from "../../services/othello.service"
@@ -22,9 +23,10 @@ export class BoardComponent implements OnInit {
 
   constructor(private othelloService: OthelloService) {}
 
+
   ngOnInit(): void {
     this.game = this.othelloService.getGame(1)
-    if(this.game.Moves.length === 0) this.gameStateToRender = this.othelloService.getStartingState().split(",").map(string => parseInt(string))
+    if(this.game.Moves.length === 0) this.gameStateToRender = getStartingState ()
 
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)

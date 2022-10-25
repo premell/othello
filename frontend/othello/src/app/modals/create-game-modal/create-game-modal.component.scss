@@ -1,0 +1,16 @@
+
+.main-container {
+  display: flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction: column;
+}
+// .main-container > * {
+//   display: flex;
+//   justify-content:center;
+// }
+
+.modal-dialog{
+  width: 420px;
+  height:680px;
+}
