@@ -13,11 +13,23 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 import { MatSliderModule } from '@angular/material/slider';
+//import { AppRoutingModule } from './app-routing.module'; // CLI imports AppRoutingModule
 
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
+import { Routes, RouterModule } from "@angular/router";
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component'
+
+const appRoutes: Routes = [
+  {path: "", component: HomeComponent},
+  {path: "Game/:id/:color", component: BoardComponent},
+ { path: '**', component: PageNotFoundComponent }
+
+]
+
+
 @NgModule({
-  imports: [BrowserModule, HttpClientModule, NgbModule, BrowserAnimationsModule, MatSliderModule, FormsModule, ReactiveFormsModule],
+  imports: [BrowserModule, HttpClientModule, NgbModule, BrowserAnimationsModule, MatSliderModule, FormsModule, ReactiveFormsModule, RouterModule.forRoot(appRoutes)],
   declarations: [
     AppComponent,
     HomeComponent,
@@ -26,6 +38,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
     GameComponent,
     CreateGameComponent,
     CreateGameModalComponent,
+    PageNotFoundComponent,
   ],
   bootstrap: [AppComponent],
 })

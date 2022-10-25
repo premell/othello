@@ -16,3 +16,12 @@
     </div>
   <!-- </ng-template> -->
 </div>
+
+
+<div *ngFor="let move of (test$ | async)?.moves">
+  {{ move.moveNumber }}
+</div>
+
+<!-- <div>{{(test$ | async)?.gameStatus}}</div> -->
+
+<button (click)="printTest()">test</button>

@@ -5,9 +5,9 @@ export enum Color {
 }
 
 
-export interface Mark {
-  SquareNumber: number
-  Color: Color
+export interface mark {
+  squareNumber: number
+  color: Color
 }
 
 /* export interface GameState {
@@ -16,36 +16,36 @@ export interface Mark {
   MoveNumber: number
 } */
 
-export interface Game {
-  Id: string,
-  TimeLimit: number,
-  TimeIncrement: number,
-  GameStatus: string,
-  WhiteTimeRemaining: number,
-  BlackTimeRemaining: number,
-  Moves: Move[]
+export interface game {
+  id: string,
+  timeLimit: number,
+  timeIncrement: number,
+  gameStatus: string,
+  whiteTimeRemaining: number,
+  blackTimeRemaining: number,
+  moves: move[]
 }
 
-export interface AttemptMove {
-  PlayerColor: Color,
-	MoveNumber: number,
-	TargetSquare: number,
-	RemainingTime: number,
+export interface attemptMove {
+  playerColor: Color,
+	moveNumber: number,
+	targetSquare: number,
+	remainingTime: number,
 }
 
-export interface Move {
-  PlayerColor: Color,
-	MoveNumber: number,
-	TargetSquare: number,
-	RemainingTime: number,
-  ResultingState: number[]
+export interface move {
+  playerColor: Color,
+	moveNumber: number,
+	targetSquare: number,
+	remainingTime: number,
+  resultingState: number[]
 }
 
 // export enum ErrorType {
 //   IllegalMove
 // }
 
-export interface InvalidMove {
-  Message: string,
+export interface invalidMove {
+  message: string,
   //Type: ErrorType.IllegalMove
 }

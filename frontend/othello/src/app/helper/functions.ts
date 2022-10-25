@@ -1,4 +1,4 @@
-import { Game, AttemptMove, Move, InvalidMove, Color } from '../helper/models'
+import { game, attemptMove, move, invalidMove, Color } from '../helper/models'
 
 // const generateStateFromMoves = (moves: Move[]): GameState[] => {
 //   let States: GameState[] = []
@@ -56,21 +56,21 @@ export const getStartingState = (): number[] => [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-
 
 export const getStateFromString = (stateAsString: string): number[] => stateAsString.split(",").map(string => parseInt(string))
 
-export const getCurrentState = (currentGame: Game): number[]=> {
-  if(currentGame.Moves.length === 0) return getStartingState()
-  else return currentGame.Moves[currentGame.Moves.length - 1].ResultingState
+export const getCurrentState = (currentGame: game): number[]=> {
+  if(currentGame.moves.length === 0) return getStartingState()
+  else return currentGame.moves[currentGame.moves.length - 1].resultingState
 }
 
 export const placeMark = (
-  currentGame: Game,
-  move: AttemptMove
-): Move | InvalidMove => {
+  currentGame: game,
+  move: attemptMove
+): move | invalidMove => {
   
 
   let currentState: number[] = getCurrentState(JSON.parse(JSON.stringify(currentGame))) //JSON.parse(JSON.stringify(currentGameState.Moves[currentGameState.Moves.length - 3].ResultingState));
-  const playerColor: Color = move.PlayerColor
+  const playerColor: Color = move.playerColor
   const opponentColor: Color = getOpponentColor(playerColor)
-  const square = move.TargetSquare
+  const square = move.targetSquare
 
   let arraysToCheck: number[][] = [[], [], [], [], [], [], [], []]
 
@@ -130,13 +130,13 @@ export const placeMark = (
 
   if (newState + "" == currentState + "")
     return {
-      Message: 'must change atleast one mark',
+      message: 'must change atleast one mark',
     }
 
   newState[square] = playerColor
-  const newMove: Move= {
+  const newMove: move= {
     ...move,
-    ResultingState: newState
+    resultingState: newState
   }
 
   return newMove

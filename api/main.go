@@ -38,29 +38,29 @@ WhiteTimeRemaining int `json:"white_time_remaining,omitempty"`
 BlackTimeRemaining int `json:"black_time_remaining,omitempty"` */
 
 type NullableMove struct {
-	PlayerColor         sql.NullInt64  `json:"player_color,omitempty"`
-	MoveNumber          sql.NullInt64  `json:"move_number,omitempty"`
-	TargetSquare        sql.NullInt64  `json:"target_square,omitempty"`
-	PlayerRemainingTime sql.NullInt64  `json:"player_remaining_time,omitempty"`
-	ResultingState      sql.NullString `json:"resulting_state,omitempty"`
+	PlayerColor         sql.NullInt64  `json:"playerColor,omitempty"`
+	MoveNumber          sql.NullInt64  `json:"moveNumber,omitempty"`
+	TargetSquare        sql.NullInt64  `json:"targetSquare,omitempty"`
+	PlayerRemainingTime sql.NullInt64  `json:"playerRemaining_time,omitempty"`
+	ResultingState      sql.NullString `json:"resultingState,omitempty"`
 }
 
 type Move struct {
-	PlayerColor         int    `json:"player_color,omitempty"`
-	MoveNumber          int    `json:"move_number,omitempty"`
-	TargetSquare        int    `json:"target_square,omitempty"`
-	PlayerRemainingTime int    `json:"player_remaining_time,omitempty"`
-	ResultingState      string `json:"resulting_state,omitempty"`
+	PlayerColor         int    `json:"playerColor,omitempty"`
+	MoveNumber          int    `json:"moveNumber,omitempty"`
+	TargetSquare        int    `json:"targetSquare,omitempty"`
+	PlayerRemainingTime int    `json:"playerRemaining_time,omitempty"`
+	ResultingState      string `json:"resultingState,omitempty"`
 }
 
 type Game struct {
-	ID                 int64 `json:"id,primaryKey:type:uuid"`
-	TimeLimit          int   `json:"time_limit,omitempty"`
-	TimeIncrement      int   `json:"time_increment,omitempty"`
-	GameStatus         int   `json:"game_status,omitempty"`
-	WhiteTimeRemaining int   `json:"white_time_remaining,omitempty"`
-	BlackTimeRemaining int   `json:"black_time_remaining,omitempty"`
-	Moves              []Move
+	ID                 int64  `json:"id,primaryKey:type:uuid"`
+	TimeLimit          int    `json:"timeLimit,omitempty"`
+	TimeIncrement      int    `json:"timeIncrement,omitempty"`
+	GameStatus         int    `json:"gameStatus,omitempty"`
+	WhiteTimeRemaining int    `json:"whiteTimeRemaining,omitempty"`
+	BlackTimeRemaining int    `json:"blackTimeRemaining,omitempty"`
+	Moves              []Move `json:"moves,omitempty"`
 }
 
 /* type Move struct {
@@ -138,7 +138,7 @@ func createGame(c *gin.Context) {
 		panic(err)
 	}
 
-	game := Game{
+	/* 	game := Game{
 		ID:                 id,
 		TimeLimit:          requestBody.TimeLimit,
 		TimeIncrement:      requestBody.TimeIncrement,
@@ -146,8 +146,8 @@ func createGame(c *gin.Context) {
 		WhiteTimeRemaining: requestBody.TimeLimit,
 		BlackTimeRemaining: requestBody.TimeLimit,
 		Moves:              []Move{},
-	}
-	c.JSON(200, game)
+	} */
+	c.JSON(200, id)
 }
 
 func getGame(c *gin.Context) {

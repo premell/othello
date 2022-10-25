@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Game } from 'src/app/helper/models';
+import { game } from 'src/app/helper/models';
 import * as internal from 'stream';
 //import { createDefaultState} from "../../helper/functions"
 

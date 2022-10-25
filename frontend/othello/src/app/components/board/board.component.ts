@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core'
-import { Move, Mark, Color, Game, InvalidMove, AttemptMove} from '../../helper/models'
+import { move, mark, Color, game, invalidMove, attemptMove} from '../../helper/models'
 import { placeMark, getStartingState, getOpponentColor} from '../../helper/functions'
 
 import { trigger, transition, state, animate, style } from '@angular/animations';
 
 import {OthelloService} from "../../services/othello.service"
+import { ActivatedRoute, Router } from '@angular/router';
+
+import {Observable, timer, switchMap} from 'rxjs';
 
 let markAttachedToCursor: HTMLElement
 let referenceMarkOnBoard: HTMLElement
@@ -17,16 +20,46 @@ let referenceMarkOnBoard: HTMLElement
 export class BoardComponent implements OnInit {
   // you have to do this so you can use it in the template
   readonly Color = Color
-  game!: Game
+  game!: game
   gameStateToRender!: number[]
   playerColor: Color = Color.Black
 
-  constructor(private othelloService: OthelloService) {}
+  test$: Observable<game>;
+
+  test2!: game;
+
+
+
+  constructor(private othelloService: OthelloService,
+    private activeRoute: ActivatedRoute,
+    private route: Router
+     ) {
+      this.test$ = timer(0, 1000).pipe(
+        switchMap(() => this.othelloService.getGame(1))
+        )
+
+
+      timer(0, 1000).pipe(
+        switchMap(() => this.othelloService.getGame(1))
+        ).subscribe(k => this.test2 = k)
+     }
+
 
 
   ngOnInit(): void {
-    this.game = this.othelloService.getGame(1)
-    if(this.game.Moves.length === 0) this.gameStateToRender = getStartingState ()
+    const id: string = this.activeRoute.snapshot.params['id']
+    const color: number = parseInt(this.activeRoute.snapshot.params['color'])
+
+
+    console.log("color ", color)
+    // if the url parameters doesnt make sense, return 404 
+    if(!(/^[0-9]+$/).test(id) || (color !== Color.Black && color !== Color.White)) this.route.navigate(['404'])
+
+    this.playerColor = color === Color.White ? Color.White : Color.Black
+    //this.game = this.othelloService.getGame(parseInt(id))
+
+
+    if(this.game.moves.length === 0) this.gameStateToRender = getStartingState()
 
     window.addEventListener('mousemove', (e) =>
       this.moveMarkToCursor(e.clientX, e.clientY)
@@ -99,20 +132,20 @@ export class BoardComponent implements OnInit {
     // TODO
     if(!this.isPlayerTurn()) return
 
-    const move: AttemptMove  = {
-      PlayerColor: this.playerColor,
-      MoveNumber: 2,
-      TargetSquare: squareNumber,
-      RemainingTime: 500,
+    const move: attemptMove  = {
+      playerColor: this.playerColor,
+      moveNumber: 2,
+      targetSquare: squareNumber,
+      remainingTime: 500,
     }
 
     const result = placeMark(this.game, move)
 
     //...BoardComponent.
-    if ('Message' in result) console.log("NOOOOOO ERROR ERR AH")
+    if ('message' in result) console.log("NOOOOOO ERROR ERR AH")
     else {
-      this.game.Moves.push(result)
-      this.gameStateToRender = result.ResultingState
+      this.game.moves.push(result)
+      this.gameStateToRender = result.resultingState
       this.playerColor = getOpponentColor(this.playerColor)
 
       markAttachedToCursor = document.getElementsByClassName(
@@ -122,4 +155,12 @@ export class BoardComponent implements OnInit {
     }
 
   }
+
+  printTest =() => {
+    console.log("test")
+    console.log(this.test$)
+    console.log(this.test2)
+  }
 }
+
+
