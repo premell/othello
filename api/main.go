@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	//"encoding/json"
@@ -16,12 +17,21 @@ import (
 var DB *sql.DB
 
 type CreateGameRequestBody struct {
-	TimeLimit     int
-	TimeIncrement int
+	TimeLimit     int `json:"timeLimit,omitempty"`
+	TimeIncrement int `json:"timeIncrement,omitempty"`
 }
 
 type GetGameRequestBody struct {
-	GameID int
+	GameID int `json:"gameId,omitempty"`
+}
+
+type MakeMoveRequestBody struct {
+	GameID              int    `json:"gameId,omitempty"`
+	PlayerColor         int    `json:"playerColor,omitempty"`
+	MoveNumber          int    `json:"moveNumber,omitempty"`
+	TargetSquare        int    `json:"targetSquare,omitempty"`
+	PlayerRemainingTime int    `json:"playerRemaining_time,omitempty"`
+	ResultingState      string `json:"resultingState,omitempty"`
 }
 
 /* type GameState struct {
@@ -87,7 +97,7 @@ func main() {
 	router := gin.Default()
 
 	router.POST("/game/createGame", createGame)
-	// router.POST("/game", makeMove)
+	router.POST("/game/makeMove", makeMove)
 	// router.POST("/game", revertMove)
 	// router.POST("/game", surrender)
 	// router.POST("/game", pass)
@@ -137,17 +147,7 @@ func createGame(c *gin.Context) {
 	if err != nil || rowsAffec != 1 {
 		panic(err)
 	}
-
-	/* 	game := Game{
-		ID:                 id,
-		TimeLimit:          requestBody.TimeLimit,
-		TimeIncrement:      requestBody.TimeIncrement,
-		GameStatus:         5,
-		WhiteTimeRemaining: requestBody.TimeLimit,
-		BlackTimeRemaining: requestBody.TimeLimit,
-		Moves:              []Move{},
-	} */
-	c.JSON(200, id)
+	c.JSON(201, id)
 }
 
 func getGame(c *gin.Context) {
@@ -197,4 +197,50 @@ func getGame(c *gin.Context) {
 	}
 
 	c.JSON(200, game)
+}
+
+func makeMove(c *gin.Context) {
+	fmt.Print("HELLO THERE")
+	var requestBody MakeMoveRequestBody
+
+	if err := c.BindJSON(&requestBody); err != nil {
+		panic(err)
+	}
+
+	array := strings.Split(requestBody.ResultingState, ",")
+
+	if len(array) != 64 {
+		panic("resulting state was not an array of length 64")
+	}
+
+	for _, elem := range array {
+		if elem != "0" && elem != "-1" && elem != "1" {
+			panic("resulting state was not an array of only values 0, -1 and 1")
+		}
+	}
+
+	ins, err := DB.Prepare("INSERT INTO moves (game_id, resulting_state, target_square, move_number, player_color, player_remaining_time) VALUES (?,?,?,?,?,?)")
+	if err != nil {
+		panic(err)
+	}
+
+	defer ins.Close()
+
+	res, err := ins.Exec(
+		requestBody.GameID,
+		requestBody.ResultingState,
+		requestBody.TargetSquare,
+		requestBody.MoveNumber,
+		requestBody.PlayerColor,
+		requestBody.PlayerRemainingTime,
+	)
+
+	id, err := res.LastInsertId()
+
+	rowsAffec, _ := res.RowsAffected()
+	if err != nil || rowsAffec != 1 {
+		panic(err)
+	}
+
+	c.JSON(201, id)
 }

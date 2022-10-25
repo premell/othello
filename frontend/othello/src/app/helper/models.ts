@@ -17,7 +17,7 @@ export interface mark {
 } */
 
 export interface game {
-  id: string,
+  id: number,
   timeLimit: number,
   timeIncrement: number,
   gameStatus: string,

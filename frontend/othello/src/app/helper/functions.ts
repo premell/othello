@@ -54,7 +54,13 @@ const changeMarks = (
 
 export const getStartingState = (): number[] => [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,0,1,-1,-1,-1,-1,-1,-1,1,0,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1]
 
-export const getStateFromString = (stateAsString: string): number[] => stateAsString.split(",").map(string => parseInt(string))
+export const getStateFromString = (stateAsString: string | number[]): number[] => {
+  // This case should never happen, but i have to include it to make typescript happy
+  // console.log("input ", stateAsString)
+  if (Array.isArray(stateAsString)) return stateAsString
+
+  return stateAsString.split(",").map(string => parseInt(string))
+}
 
 export const getCurrentState = (currentGame: game): number[]=> {
   if(currentGame.moves.length === 0) return getStartingState()

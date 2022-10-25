@@ -20,6 +20,8 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Routes, RouterModule } from "@angular/router";
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component'
 
+import { GetStatePipe } from './pipes/getstate.pipe'
+
 const appRoutes: Routes = [
   {path: "", component: HomeComponent},
   {path: "Game/:id/:color", component: BoardComponent},
@@ -39,6 +41,7 @@ const appRoutes: Routes = [
     CreateGameComponent,
     CreateGameModalComponent,
     PageNotFoundComponent,
+    GetStatePipe,
   ],
   bootstrap: [AppComponent],
 })

@@ -6,6 +6,18 @@
 <!--   </div> -->
 <!-- </div> -->
 
+<!-- <div class="board board_players_turn">
+  <div class="mark_moving_with_cursor mark"></div>
+  <div *ngFor="let square of gameStateToRender; let i = index" class="square" (click)="handleSquareClicked(i)">
+      <div
+        *ngIf="square === Color.White || square === Color.Black"
+        [ngClass]="square === Color.White ? 'mark white' : 'mark black'"
+      ></div>
+    </div>
+  </ng-template>
+</div>
+ -->
+
 <div class="board board_players_turn">
   <div class="mark_moving_with_cursor mark"></div>
   <div *ngFor="let square of gameStateToRender; let i = index" class="square" (click)="handleSquareClicked(i)">
@@ -14,13 +26,12 @@
         [ngClass]="square === Color.White ? 'mark white' : 'mark black'"
       ></div>
     </div>
-  <!-- </ng-template> -->
 </div>
 
 
-<div *ngFor="let move of (test$ | async)?.moves">
+<!-- <div *ngFor="let move of (test$ | async)?.moves">
   {{ move.moveNumber }}
-</div>
+</div> -->
 
 <!-- <div>{{(test$ | async)?.gameStatus}}</div> -->
 

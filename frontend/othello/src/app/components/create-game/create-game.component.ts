@@ -43,8 +43,6 @@ export class CreateGameComponent implements OnInit {
     //let id: string = ""
     const id = await firstValueFrom(this.othelloService.createGame(this.timeLimitValue, this.timeIncrementValue))
 
-    console.log("ID ", id)
-
     this.route.navigate(['Game', id, playerColor] )
 
     if(this.modalReference) this.modalReference.close()

@@ -9,12 +9,13 @@ import { environment } from './../../environments/environment';
 
 import { move, mark, Color, game, invalidMove} from '../helper/models'
 import { Observable } from 'rxjs';
-
+import { map } from "rxjs/operators";
+import { getStateFromString } from '../helper/functions';
 
 
 // Dummy data
 let dummyGame: game= {
-  id: "1",
+  id: 1,
   timeLimit: 500,
   timeIncrement: 5,
   gameStatus: "currently_playing",
@@ -30,15 +31,37 @@ export class OthelloService {
 
   constructor(private http: HttpClient) { }
 
-  getGame(id: number): Observable<game>{
-    //return dummyGame
-    return this.http.get<game>(environment.apiBaseUrl + "/game/getGame?GameID="+ id)
-  }
-
   createGame(timeLimit: number, timeIncrement: number): Observable<string>{
     return this.http.post<string>(environment.apiBaseUrl + "/game/createGame", JSON.stringify({
-      TimeLimit: timeLimit,
-      TimeIncrement: timeIncrement,
+      timeLimit: timeLimit,
+      timeIncrement: timeIncrement,
     }))
+  }
+
+  getGame(id: number): Observable<game>{
+    // TODO somehow transform incoming string to array of numbers
+    return this.http.get<game>(environment.apiBaseUrl + "/game/getGame?GameID="+ id).pipe(map(game => {
+      // this means that no game was found
+      if(game.id === 0) return game
+
+      let formattedGame: game = game;
+      formattedGame.moves = game.moves || []
+      formattedGame.moves.forEach(move => {
+        move.resultingState = getStateFromString(move.resultingState)
+      });
+      return game
+    }))
+  }
+
+  makeMove(move: move, gameid: number): void {
+    const response = this.http.post<string>(environment.apiBaseUrl + "/game/makeMove", JSON.stringify({
+      gameId: gameid,
+      playerColor: move.playerColor,
+      moveNumber: move.moveNumber,
+      targetSquare: move.targetSquare,
+      playerRemainingTime: move.remainingTime,
+      resultingState: move.resultingState
+    }))
+    console.log(response)
   }
 }
