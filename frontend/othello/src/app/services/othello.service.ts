@@ -10,7 +10,7 @@ import { environment } from './../../environments/environment';
 import { move, mark, Color, game, invalidMove} from '../helper/models'
 import { Observable } from 'rxjs';
 import { map } from "rxjs/operators";
-import { getStateFromString } from '../helper/functions';
+import { getStateFromString, getStringFromState } from '../helper/functions';
 
 
 // Dummy data
@@ -53,15 +53,16 @@ export class OthelloService {
     }))
   }
 
-  makeMove(move: move, gameid: number): void {
-    const response = this.http.post<string>(environment.apiBaseUrl + "/game/makeMove", JSON.stringify({
+  makeMove(move: move, gameid: number): Observable<string>{
+    console.log(getStringFromState(move.resultingState))
+    console.log(gameid)
+    return this.http.post<string>(environment.apiBaseUrl + "/game/makeMove", JSON.stringify({
       gameId: gameid,
       playerColor: move.playerColor,
       moveNumber: move.moveNumber,
       targetSquare: move.targetSquare,
       playerRemainingTime: move.remainingTime,
-      resultingState: move.resultingState
+      resultingState: getStringFromState(move.resultingState)
     }))
-    console.log(response)
   }
 }

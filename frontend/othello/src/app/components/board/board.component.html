@@ -18,7 +18,7 @@
 </div>
  -->
 
-<div class="board board_players_turn">
+<div class="board">
   <div class="mark_moving_with_cursor mark"></div>
   <div *ngFor="let square of gameStateToRender; let i = index" class="square" (click)="handleSquareClicked(i)">
       <div
@@ -28,6 +28,7 @@
     </div>
 </div>
 
+<div class="test">testing</div>
 
 <!-- <div *ngFor="let move of (test$ | async)?.moves">
   {{ move.moveNumber }}

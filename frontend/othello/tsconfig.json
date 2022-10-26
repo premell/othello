@@ -21,7 +21,11 @@
     "lib": [
       "es2020",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@constants": [ "src/app/helper/constants.ts" ],
+      "@models": [ "src/app/helper/models.ts" ],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -29,4 +33,5 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
+
 }

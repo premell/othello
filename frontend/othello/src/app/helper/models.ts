@@ -49,3 +49,31 @@ export interface invalidMove {
   message: string,
   //Type: ErrorType.IllegalMove
 }
+
+
+
+// THEMES
+export interface theme {
+    squareColor: string,
+    squareHover: string,
+    whiteMarkColor: string,
+    blackMarkColor: string,
+    markOutline: string,
+    mainButtonColor: string,
+    mainButtonHover: string,
+    secondaryButtonColor: string,
+    secondaryButtonHover: string,
+
+    backgroundColor: string,
+    containerColor: string,
+
+    strongTextColor: string,
+    regularTextColor: string,
+    weakTextColor: string,
+}
+
+export interface themes {
+  light: theme;
+  dark: theme;
+}
+

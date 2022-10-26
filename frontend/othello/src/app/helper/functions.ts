@@ -62,6 +62,10 @@ export const getStateFromString = (stateAsString: string | number[]): number[] =
   return stateAsString.split(",").map(string => parseInt(string))
 }
 
+export const getStringFromState = (state: number[]): string => state.join()
+
+
+
 export const getCurrentState = (currentGame: game): number[]=> {
   if(currentGame.moves.length === 0) return getStartingState()
   else return currentGame.moves[currentGame.moves.length - 1].resultingState

@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"strconv"
 	"strings"
 	"time"
 
@@ -150,7 +151,7 @@ func createGame(c *gin.Context) {
 	c.JSON(201, id)
 }
 
-func getGame(c *gin.Context) {
+func getGameHandler(gameId int) Game {
 	query := `
     SELECT g.id, g.time_limit, g.time_increment, g.game_status, g.white_time_remaining, g.black_time_remaining, 
 	moves.resulting_state, moves.target_square, moves.move_number,
@@ -161,9 +162,7 @@ func getGame(c *gin.Context) {
     WHERE g.id= ?
   `
 
-	gameID := c.Query("GameID")
-
-	rows, err := DB.Query(query, gameID)
+	rows, err := DB.Query(query, gameId)
 	if err != nil {
 		fmt.Println("ERROR 2")
 		panic(err)
@@ -195,10 +194,19 @@ func getGame(c *gin.Context) {
 			})
 		}
 	}
+	return *game
+}
 
+func getGame(c *gin.Context) {
+	gameID := c.Query("GameID")
+
+	idAsInt, _ := strconv.ParseInt(gameID, 0, 32)
+
+	game := getGameHandler(int(idAsInt))
 	c.JSON(200, game)
 }
 
+// TODO add much more validation here. a player shouldnt be able to make multiple moves etc
 func makeMove(c *gin.Context) {
 	fmt.Print("HELLO THERE")
 	var requestBody MakeMoveRequestBody
@@ -207,16 +215,21 @@ func makeMove(c *gin.Context) {
 		panic(err)
 	}
 
+	// Check that resultingState is valid
 	array := strings.Split(requestBody.ResultingState, ",")
-
 	if len(array) != 64 {
 		panic("resulting state was not an array of length 64")
 	}
-
 	for _, elem := range array {
 		if elem != "0" && elem != "-1" && elem != "1" {
 			panic("resulting state was not an array of only values 0, -1 and 1")
 		}
+	}
+
+	// Check that move order is valid
+	game := getGameHandler(requestBody.GameID)
+	if game.Moves[len(game.Moves)-1].PlayerColor == requestBody.PlayerColor {
+		panic("its not the players turn")
 	}
 
 	ins, err := DB.Prepare("INSERT INTO moves (game_id, resulting_state, target_square, move_number, player_color, player_remaining_time) VALUES (?,?,?,?,?,?)")

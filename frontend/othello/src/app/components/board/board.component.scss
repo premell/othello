@@ -1,26 +1,19 @@
-// <div class="board">
-//   <ng-container *ngFor="let squareNumber of squareNumbers" class="squareNumber">
-//     <div *ngIf="squareContainsMark(squareNumber)" [ngClass]="isWhite(squareNumber) ? 'mark white' : 'mark black'">
-//       <!-- <div class="mark" [style.color]="marks[squareNumber].Color"> -->
-//       1
-//       <!-- </div> -->
-//     </div>
-//   </ng-container>
-// </div>
-
 .board {
+  border-radius: 8px;
+  overflow: hidden;
+
   display: grid;
   overflow: hidden;
   grid-template-columns: repeat(8, 1fr);
   grid-column-gap: 5px;
   grid-row-gap: 5px;
-  max-width: 800px;
-  min-width: 400px;
-  background-color: black;
+  max-width: 750px;
+  min-width: 300px;
+  background-color: var(--markOutline);
 }
 
 .square {
-  background-color: #11823b;
+  background-color: var(--squareColor);
   aspect-ratio: 1/1;
   display: flex;
   align-items: center;
@@ -28,7 +21,7 @@
 }
 
 .square:hover{
-  background-color: #004d25;
+  background-color: var(--squareHover);
 }
 
 .mark {
@@ -39,11 +32,11 @@
 }
 
 .white {
-  background-color: white;
+  background-color: var(--whiteMarkColor);
 }
 
 .black {
-  background-color: black;
+  background-color: var(--blackMarkColor);
 }
 
 .board_players_turn {
@@ -51,11 +44,12 @@
 }
 
 .mark_moving_with_cursor {
+  padding:0px;
   width: 0px;
   height: 0px;
+  visibility: hidden;
   pointer-events:none;
   position: absolute;
-  background-color: black;
 }
 
 @keyframes slidein {
@@ -67,5 +61,3 @@
     transform: translateX(100%);
   }
 }
-
-
