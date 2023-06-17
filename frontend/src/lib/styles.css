@@ -1,0 +1,169 @@
+:root {
+  --primary-color: #6495ed;
+  --bg-color: #edebe9;
+  --secondary-color: white;
+  --button-background: #f7f6f5;
+
+  --main-text-color: #4d4d4d;
+  --secondary-text-color: #5e5e5e;
+  --regular-text-color: #4d4d4d;
+
+  --light-blue-accent-color: #d1e4f6;
+  --strong-blue-accent-color: #1b78d0;
+
+  --light-green-accent-color: #89b35b;
+  --strong-green-accent-color: #89b35b;
+
+  --timer-color: #d0e0bd;
+  --dark-text: black;
+
+  --light-red-accent-color: #c33;
+  --strong-red-accent-color: #c33;
+
+  --milliseconds-red: #f2cccc;
+
+
+  --cancel-button: #b1b1b1;
+  --rematch-button: #dfdfdf;
+  --rematch-button-hover: #E16750;
+
+  --big-button-background: #89b35b;
+  --big-button-background-hover: #9dcb6c;
+
+  --board-color: #96BB93;
+  --board-hover: #649E62;
+  --board-last-played: #f3ff81;
+  --board-available: #CAE8A5;
+
+  --orange-light: #ffe5cc;
+  --orange-medium: #E08732;
+  --orange-strong: #efb986;
+  --orange-very-strong: #d99e66;
+}
+
+[data-theme="dark"] {
+  --primary-color: #2b3f63;
+  --secondary-color: #3e3e3e;
+  --bg-color: #2a2a2a;
+  --button-background: light-gray;
+
+  --main-text-color: #e1e1e1;
+  --secondary-text-color: #d1d1d1;
+  --regular-text-color: #bfbfbf;
+
+  --light-blue-accent-color: #8298ae;
+  --strong-blue-accent-color: #1b78d0;
+
+  --light-green-accent-color: #738d57;
+  --strong-green-accent-color: #89b35b;
+
+  --big-button-background: #89b35b;
+  --big-button-background-hover: #218aee;
+
+  --light-red-accent-color: #bd6e6e;
+  --strong-red-accent-color: #aa8080;
+
+  --board-color: #528d52;
+  --timer-color: #6b7b58;
+  --dark-text: black;
+
+  --navbar-text: #e1e1e1;
+  --navbar-button-text: #d1d1d1;
+
+  --milliseconds-red: #b97272;
+
+
+  --cancel-button: #878787;
+  --rematch-button: #626262;
+  --rematch-button-hover: #E16750;
+
+  --big-button-background: #89b35b;
+  --big-button-background-hover: #86ad5c;
+
+  --board-color: #86ab83;
+  --board-hover: #649E62;
+  --board-last-played: #eaf390;
+  --board-available: #b5cb9a;
+
+  --orange-light: #db893a;
+  --orange-medium: #E08732;
+  --orange-strong: #ffb570;
+  --orange-very-strong: #d99e66;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, segoe ui, Roboto,
+    helvetica neue, Arial, noto sans, sans-serif, apple color emoji,
+    segoe ui emoji, segoe ui symbol, noto color emoji;
+  background-color: var(--bg-color);
+  color: var(--regular-text-color);
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  margin-right: 14px;
+
+  color: var(--main-text-color);
+}
+
+.subtitle {
+  margin: 0 14px;
+  color: var(--secondary-text-color);
+  font-size: 20px;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.subtitle:hover {
+  background-color: var(--big-button-background);
+  cursor: pointer;
+  color: white;
+}
+
+html * {
+  font-family: "Noto Sans", sans-serif;
+}
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+input,
+textarea {
+  background-color: transparent;
+}
+
+.big_button {
+  font-family: "Roboto", sans-serif;
+  background: var(--big-button-background);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  color: white;
+
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.225);
+}
+
+.big_button:hover {
+  cursor: pointer;
+  background: var(--big-button-background-hover);
+  box-shadow: 0 0 12px #b3b3b3;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+a {
+  color: inherit; /* inherit color from parent */
+  text-decoration: none; /* removes the underline */
+  background: none; /* removes the background */
+  font-size: inherit; /* inherit font size from parent */
+  font-family: inherit; /* inherit font family from parent */
+}
