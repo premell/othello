@@ -24,14 +24,14 @@ export function setBoardHeightProperty() {
   const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
   const trySetBoardHeight = async (attempts = 0) => {
-    let board = document.getElementById("board");
+    const board = document.getElementById("board");
 
     if (board) {
       let wHeight = window.innerHeight;
       let wWidth = window.innerWidth;
       console.log(wHeight);
       console.log(wWidth);
-      let minBoardSize = 300;
+      const minBoardSize = 300;
       let boardSize;
       let componentSize;
 

@@ -139,10 +139,8 @@ connection.on(
     });
     if (!get(soundMuted)) new Audio("/sounds/game_end.wav").play();
 
-
     playerActionRequests.set([]);
     get(gameTimers).stopTimers();
-
 
     currentGame.update((game) => {
       return { ...game, winner, status, legalMoves: [], playerTurn: COLOR_VALUES.NONE, };
@@ -187,7 +185,6 @@ connection.on(
     timeLimitSeconds: number
   ) => {
     console.log("session joined");
-    console.log(sessionId);
     sessionInfo.set({
       id: sessionId,
       timeLimitSeconds: timeLimitSeconds,
@@ -229,7 +226,6 @@ connection.on(
     if (!get(currentGame)) return;
 
     const moves = get(currentGame).moves;
-
     // if the move number is lower than the last move, it means the move was taken back.
     if (
       lastMove &&
