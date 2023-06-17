@@ -45,6 +45,7 @@
 		"@microsoft/signalr": "^7.0.3",
 		"axios": "^1.3.4",
 		"dotenv": "^16.0.3",
+		"sass": "^1.63.4",
 		"svelte-icons": "^2.1.0",
 		"svelte-navigator": "^3.2.2",
 		"svelte-routing": "^1.6.0"
