@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="17c4d603-af64-4fd3-a149-3044be2c8a2f" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/othello_api/Enums/Enums.cs" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/Enums/Enums.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/Models/Game.cs" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/Models/Game.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/bin/Debug/net7.0/othello_api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/bin/Debug/net7.0/othello_api.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/bin/Debug/net7.0/othello_api.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/bin/Debug/net7.0/othello_api.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.assets.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.dll" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/obj/Debug/net7.0/othello_api.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/othello_api/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/othello_api/obj/rider.project.restore.info" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2MuYxMiqbcNPb6naJQY3jKx4U08" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/home/premell/programming/othello/othello_api",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="17c4d603-af64-4fd3-a149-3044be2c8a2f" name="Changes" comment="" />
+      <created>1678619197629</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1678619197629</updated>
+      <workItem from="1678619201043" duration="50000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

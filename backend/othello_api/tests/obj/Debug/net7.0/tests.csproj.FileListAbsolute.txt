@@ -1,0 +1,5 @@
+/home/premell/dotfiles/home/programming/othello/othello_api/tests/obj/Debug/net7.0/tests.csproj.AssemblyReference.cache
+/home/premell/dotfiles/home/programming/othello/othello_api/tests/obj/Debug/net7.0/tests.GeneratedMSBuildEditorConfig.editorconfig
+/home/premell/dotfiles/home/programming/othello/othello_api/tests/obj/Debug/net7.0/tests.AssemblyInfoInputs.cache
+/home/premell/dotfiles/home/programming/othello/othello_api/tests/obj/Debug/net7.0/tests.AssemblyInfo.cs
+/home/premell/dotfiles/home/programming/othello/othello_api/tests/obj/Debug/net7.0/tests.csproj.CoreCompileInputs.cache

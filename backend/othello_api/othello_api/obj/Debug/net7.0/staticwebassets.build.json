@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "iKcr65rw9SnLgBD7/CG5QyXdhQApNjPBpIl1bw0PsBY=",
+  "Source": "othello_api",
+  "BasePath": "_content/othello_api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
