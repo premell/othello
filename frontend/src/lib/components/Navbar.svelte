@@ -44,9 +44,9 @@
   </div>
   {#if currentTheme !== ""}
     <div class="right">
-      <div class="subtitle" on:click={() => (location.href = "/")}>
+      <div class="subtitle">
         <a
-          href="https://github.com/premell/othello#how-to-play"
+          href="https://github.com/premell/othello#how-to-play--video_game"
           target="_blank"
           rel="noopener noreferrer"
         >
