@@ -8,9 +8,7 @@
   import FaVolumeMute from "svelte-icons/fa/FaVolumeMute.svelte";
   import FaVolumeUp from "svelte-icons/fa/FaVolumeUp.svelte";
   import FaLinkedinIn from "svelte-icons/fa/FaLinkedinIn.svelte";
-  import {
-    soundMuted,
-  } from "$lib/stores/gameStore";
+  import { soundMuted } from "$lib/stores/gameStore";
 
   let currentTheme = "";
   onMount(() => {
@@ -46,6 +44,16 @@
   </div>
   {#if currentTheme !== ""}
     <div class="right">
+      <div class="subtitle" on:click={() => (location.href = "/")}>
+        <a
+          href="https://github.com/premell/othello#how-to-play"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          How to play
+        </a>
+      </div>
+
       <div
         class="icon github_icon"
         use:tooltip={{
