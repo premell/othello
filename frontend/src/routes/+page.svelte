@@ -67,6 +67,12 @@
   }
 </script>
 
+
+  <div class="single_player_note_container">
+  Open the link in a new tab to play againts yourself!
+
+</div>
+
 {#if !$sessionInfo?.opponentUrlConnection}
   <div class="main_container create_main_container">
     <div class="title">Create new game</div>
@@ -194,7 +200,7 @@
     border-radius: 4px;
     padding: 1.5rem 1rem;
     margin: auto;
-    margin-top: 6em;
+    margin-top: 2em;
     width: 100%;
 
     display: flex;
@@ -208,26 +214,47 @@
   .create_main_container {
     min-height: 470px;
     max-width: 420px;
-
     min-width: 300px;
   }
 
-  @media (max-height: 800px) and (min-height: 600px) {
-    .create_main_container {
-      margin: 0;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      -ms-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-    }
+  .single_player_note_container {
+    box-sizing: border-box;
+    background: var(--secondary-color);
+    border-radius: 4px;
+    padding: 1.5rem 1rem;
+    margin: auto;
+    margin-top: 2em;
+
+    max-width: 550px;
+    min-width: 300px;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
+      0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
   }
 
-  @media (max-height: 600px) {
-    .create_main_container {
-      margin-top: 0px;
-    }
-  }
+  /* @media (max-height: 800px) and (min-height: 600px) { */
+  /*   .create_main_container { */
+  /*     margin: 0; */
+  /*     position: absolute; */
+  /*     top: 50%; */
+  /*     left: 50%; */
+  /*     -ms-transform: translate(-50%, -50%); */
+  /*     transform: translate(-50%, -50%); */
+  /*   } */
+  /* } */
+  /**/
+  /* @media (max-height: 600px) { */
+  /*   .create_main_container { */
+  /*     margin-top: 0px; */
+  /*   } */
+  /* } */
 
   .link_main_container {
     min-height: 300px;
