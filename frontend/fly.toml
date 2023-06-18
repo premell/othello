@@ -1,0 +1,18 @@
+# fly.toml app configuration file generated for othello-frontend on 2023-06-18T01:54:44+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "othello-frontend"
+primary_region = "arn"
+
+[env]
+  PORT = "5173"
+  # PUBLIC_API_BASEURL="https://othello-api.fly.dev"
+
+[http_service]
+  internal_port = 5173
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0

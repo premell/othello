@@ -1,23 +1,19 @@
-# Use Node.js as base image
-FROM node:18
-
-# Set working directory in the Docker container
-WORKDIR /usr/src/app
-
-# Copy package.json and package-lock.json
-COPY package*.json ./
-
-# Install dependencies
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json .
 RUN npm install
-
-# Copy the rest of your app's source code
 COPY . .
-
-# Build the SvelteKit app
 RUN npm run build
+RUN npm prune --production
 
-# Expose the port that your app runs on
-EXPOSE 3000
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/build build/
+COPY --from=builder /app/node_modules node_modules/
+COPY package.json .
+EXPOSE 8080
+ENV NODE_ENV=production
 
-# Define the command to run your app
-CMD ["node", "build"]
+# RUN echo $PUBLIC_API_BASEURL
+
+CMD [ "node", "build" ]
