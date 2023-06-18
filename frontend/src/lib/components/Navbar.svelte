@@ -64,7 +64,7 @@
         }}
       >
         <a
-          href="https://github.com/premell/"
+          href="https://github.com/premell/othello"
           target="_blank"
           rel="noopener noreferrer"
         >
