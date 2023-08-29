@@ -9,7 +9,7 @@ Immerse yourself in a timeless strategic duel and challenge your friends to an e
 <img alt="alt_text" width="700px" src="./readme_images/othello_sc2.png" />
   </p>
 
-### How to play  :video_game:
+### How to play
 Embark on the Othello journey with these simple steps:
 
 1. The battle commences with two black discs and two white discs placed diagonally in the center of the 8x8 grid.
